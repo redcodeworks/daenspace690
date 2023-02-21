@@ -5,8 +5,8 @@ import org.apache.log4j.{Logger, Level}
 
 
 object Main {
-  def main(): Unit =
-    Logger.getLogger("org.apache.spark").setLevel(Level.ERROR)
+
+  Logger.getLogger("org.apache.spark").setLevel(Level.ERROR)
 
   val spark = SparkSession.builder()
     .appName("DaenSpace690")
@@ -15,13 +15,17 @@ object Main {
 
   import spark.implicits._
 
-  val df = List("hello", "world").toDF
+  val csvData = getClass.getResource("/airlineSops.csv")
 
-  println(
-    spark.sparkContext.parallelize(1 to 100).map(x => x * x).filter(_ % 2 == 0).collect().mkString("Array(", ", ", ")")
-  )
+  def main(args: Array[String]): Unit = {
 
-  df.show()
+    val df = spark.read
+      .option("header", true)
+      .option("inferSchema", true)
+      .csv(csvData.getPath)
 
-  spark.stop()
+    df.show()
+
+    spark.stop()
+  }
 }

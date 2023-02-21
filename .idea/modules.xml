@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/daenspace690.iml" filepath="$PROJECT_DIR$/.idea/modules/daenspace690.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/daenspace690-build.iml" filepath="$PROJECT_DIR$/.idea/modules/daenspace690-build.iml" />
     </modules>
   </component>
 </project>
