@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab6ea5f7-9d15-4723-996d-de24d4fca403" name="Changes" comment="Added sbt script">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/NlpPipeline.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/plugins.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/project/plugins.sbt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,7 +227,7 @@
       <workItem from="1677541886051" duration="680000" />
       <workItem from="1677542818481" duration="1483000" />
       <workItem from="1677961678288" duration="975000" />
-      <workItem from="1677962665947" duration="12000" />
+      <workItem from="1677962665947" duration="3911000" />
     </task>
     <task id="LOCAL-00001" summary="Added sbt script">
       <created>1677018985259</created>
@@ -237,7 +236,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677018985259</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added sbt script">
+      <created>1677962850496</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1677962850496</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
