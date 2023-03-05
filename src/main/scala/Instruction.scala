@@ -1,7 +1,5 @@
 package edu.gmu.daenspace690
 
-import com.google.protobuf.DescriptorProtos.FieldDescriptorProto.Label
-
 case class Instruction(procedureName: String, index: Int, start: Int, end: Int, label: Label, text: String)
 
 object Instruction {
