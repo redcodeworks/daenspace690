@@ -11,8 +11,12 @@ lazy val root = (project in file("."))
 scalacOptions ++= Seq("-language:implicitConversions", "-deprecation")
 
 libraryDependencies ++= Seq(
+  ("com.typesafe" % "config" % "1.4.2"),
   ("org.apache.spark" %% "spark-core" % "3.3.2"),
   ("org.apache.spark" %% "spark-sql" % "3.3.2"),
-  ("com.johnsnowlabs.nlp" %% "spark-nlp" % "4.3.0" % Test)
+  ("org.apache.spark" %% "spark-mllib" % "3.3.2"),
+  ("com.johnsnowlabs.nlp" %% "spark-nlp" % "4.3.1"),
+  ("org.apache.hadoop" % "hadoop-aws" % "3.3.2"),
+  ("com.amazonaws" % "aws-java-sdk" % "1.12.415"),
 )
 
