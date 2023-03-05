@@ -1,7 +1,7 @@
 
 
 
-val lines = scala.io.Source.fromResource("airlineSops.csv").getLines()
+val lines = scala.io.Source.fromResource("data/airlineSops.csv").getLines()
 
 
 import edu.gmu.daenspace690._
