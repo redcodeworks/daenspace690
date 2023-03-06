@@ -17,10 +17,14 @@ import org.apache.spark.ml.tuning.{
 
 abstract class NlpPipeline {
   val config: Config = ConfigFactory.load()
+
   val lang = config.getString("input-data.language")
+
   val docAssembler =
-    new DocumentAssembler() setInputCol ("description") setOutputCol ("document")
+    new DocumentAssembler() setInputCol "description" setOutputCol "document"
+
   val sentenceEmbeddings: Transformer
+
   val classifier: ClassifierDLApproach = new ClassifierDLApproach()
     .setInputCols("sentence_embeddings")
     .setOutputCol("class")
@@ -28,23 +32,66 @@ abstract class NlpPipeline {
     .setMaxEpochs(5)
 
   val pipeline: Pipeline
-//  TODO: Implement paramgrids for cross validators
-//  val cv: CrossValidator
+  //  TODO: Implement paramgrids for cross validators
+  //  val cv: CrossValidator
+}
+
+
+
+object UsePipeline extends NlpPipeline {
+  val useModel = config.getString("use.model")
+  val sentenceEmbeddings = UniversalSentenceEncoder
+    .pretrained(useModel, lang)
+    .setInputCols(docAssembler.getOutputCol)
+    .setOutputCol("sentence_embeddings")
+
+  val pipeline: Pipeline = new Pipeline().setStages(
+    Array(
+      docAssembler,
+      sentenceEmbeddings,
+      classifier
+    )
+  )
 }
 
 abstract class StandardPipeline extends NlpPipeline {
-  lazy val tokenizer =
-    new Tokenizer() setInputCols (docAssembler.getOutputCol) setOutputCol ("token")
-  lazy val normalizer =
-    new Normalizer() setInputCols (tokenizer.getOutputCol) setOutputCol ("normalized")
-  lazy val stopwordsCleaner =
-    new StopWordsCleaner() setInputCols (normalizer.getOutputCol) setOutputCol ("cleanedTokens")
-  lazy val lemma = new LemmatizerModel(
-    config.getString("pipeline.lemmatizerModel")
-  ) setInputCols (stopwordsCleaner.getOutputCol) setOutputCol ("lemma")
+  lazy val tokenizer = new Tokenizer()
+    .setInputCols(docAssembler.getOutputCol)
+    .setOutputCol("token")
+
+  lazy val normalizer = new Normalizer()
+    .setInputCols(tokenizer.getOutputCol)
+    .setOutputCol("normalized")
+
+  lazy val stopwordsCleaner = new StopWordsCleaner()
+    .setInputCols(normalizer.getOutputCol)
+    .setOutputCol("cleanedTokens")
+
+  lazy val lemma = LemmatizerModel
+    .pretrained(lemmatizerModel)
+    .setInputCols(stopwordsCleaner.getOutputCol)
+    .setOutputCol("lemma")
+
+  lazy val sentenceEmbeddings = new SentenceEmbeddings()
+    .setInputCols(docAssembler.getOutputCol, "embeddings")
+    .setOutputCol("sentence_embeddings")
+    .setPoolingStrategy(poolingStrategy)
+
+  val lemmatizerModel = config.getString("pipeline.lemmatizerModel")
 
   val wordEmbeddings: Transformer
-  val sentenceEmbeddings: Transformer
+
+  val poolingStrategy: String
+
+}
+
+object GlovePipeline extends StandardPipeline {
+  val gloveModel = config.getString("glove.model")
+  val poolingStrategy = config.getString("glove.pooling")
+  val wordEmbeddings: WordEmbeddingsModel = WordEmbeddingsModel
+    .pretrained(gloveModel, lang)
+    .setInputCols(docAssembler.getOutputCol, lemma.getOutputCol)
+    .setOutputCol("embeddings")
 
   val pipeline: Pipeline = new Pipeline().setStages(
     Array(
@@ -58,52 +105,52 @@ abstract class StandardPipeline extends NlpPipeline {
       classifier
     )
   )
-}
 
-object UsePipeline extends NlpPipeline {
-  val sentenceEmbeddings = UniversalSentenceEncoder
-    .pretrained(config.getString("use.model"), lang)
-    .setInputCols(docAssembler.getOutputCol)
-    .setOutputCol("sentence_embeddings")
-
-  val pipeline: Pipeline = new Pipeline().setStages(
-    Array(docAssembler, sentenceEmbeddings, classifier)
-  )
-}
-
-object GlovePipeline extends StandardPipeline {
-  lazy val wordEmbeddings: WordEmbeddingsModel = WordEmbeddingsModel
-    .pretrained()
-    .setInputCols(docAssembler.getOutputCol, lemma.getOutputCol)
-    .setOutputCol("embeddings")
-
-  lazy val sentenceEmbeddings = new SentenceEmbeddings()
-    .setInputCols(docAssembler.getOutputCol, "embeddings")
-    .setOutputCol("sentence_embeddings")
-    .setPoolingStrategy(config.getString("glove.pooling"))
 }
 
 object BertPipeline extends StandardPipeline {
-  lazy val wordEmbeddings = BertEmbeddings
-    .pretrained(config.getString("bert.model"), lang)
+  val bertModel = config.getString("bert.model")
+  val poolingStrategy = config.getString("bert.pooling")
+  val wordEmbeddings = BertEmbeddings
+    .pretrained(bertModel, lang)
     .setInputCols(docAssembler.getOutputCol, lemma.getOutputCol)
     .setOutputCol("embeddings")
 
-  lazy val sentenceEmbeddings = new SentenceEmbeddings()
-    .setInputCols(docAssembler.getOutputCol, "embeddings")
-    .setOutputCol("sentence_embeddings")
-    .setPoolingStrategy(config.getString("bert.pooling"))
+  val pipeline: Pipeline = new Pipeline().setStages(
+    Array(
+      docAssembler,
+      tokenizer,
+      normalizer,
+      stopwordsCleaner,
+      lemma,
+      wordEmbeddings,
+      sentenceEmbeddings,
+      classifier
+    )
+  )
+
+
 }
 
 object ElmoPipeline extends StandardPipeline {
-  lazy val wordEmbeddings = ElmoEmbeddings
-    .pretrained(config.getString("elmo.model"))
+  val elmoModel = config.getString("elmo.model")
+  val poolingStrategy = config.getString("elmo.pooling")
+  val wordEmbeddings = ElmoEmbeddings
+    .pretrained(elmoModel)
     .setInputCols(docAssembler.getOutputCol, lemma.getOutputCol)
     .setOutputCol("embeddings")
 
-  lazy val sentenceEmbeddings =
-    new SentenceEmbeddings()
-      .setInputCols(docAssembler.getOutputCol, "embeddings")
-      .setOutputCol("sentence_embeddings")
-      .setPoolingStrategy(config.getString("elmo.pooling"))
+  val pipeline: Pipeline = new Pipeline().setStages(
+    Array(
+      docAssembler,
+      tokenizer,
+      normalizer,
+      stopwordsCleaner,
+      lemma,
+      wordEmbeddings,
+      sentenceEmbeddings,
+      classifier
+    )
+  )
+
 }

@@ -13,9 +13,12 @@ object Spark {
   val session = SparkSession.builder()
     .appName(config.getString("spark.appName"))
     .master(sys.env.getOrElse("SPARK_MASTER_URL", "local[*]"))
+    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
     .getOrCreate()
 
-  import session.implicits._
+  session.sparkContext.hadoopConfiguration.set("fs.s3a.access.key", sys.env.getOrElse("AWS_ACCESS_KEY_ID", ""))
+  session.sparkContext.hadoopConfiguration.set("fs.s3a.secret.key", sys.env.getOrElse("AWS_SECRET_ACCESS_KEY", ""))
+  session.sparkContext.hadoopConfiguration.set("fs.s3a.endpoint", "s3.amazonaws.com")
 
   Logger.getLogger("org.apache.spark").setLevel(logLevel)
 }
