@@ -8,7 +8,6 @@ case class Decision(ele: Element.Value) extends Label
 case class Waiting(ele: Element.Value) extends Label
 case class Verification(ele: Element.Value) extends Label
 
-
 object Element extends Enumeration {
   type Element = Value
   val What, Where, How = Value
