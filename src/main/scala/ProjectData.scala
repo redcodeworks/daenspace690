@@ -28,4 +28,8 @@ object ProjectData {
   val trainingSet = splits(0)
   val testSet = splits(1)
 
+
+  trainingSet.show(20, false)
+  testSet.show(20, false)
+
 }

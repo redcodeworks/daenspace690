@@ -15,9 +15,6 @@ object ModelFit {
     val trainDf = ProjectData.trainingSet
     val testDf = ProjectData.testSet
 
-    trainDf.show()
-    testDf.show()
-
     val pl = pipelineName match {
       case "use"   => UsePipeline
       case "glove" => GlovePipeline
@@ -32,10 +29,11 @@ object ModelFit {
     val fittedModel = pl.pipeline.fit(trainDf)
     val predictions = fittedModel.transform(testDf)
 
+//    TODO: Fix this to allow overwrites
     if (config.getBoolean("pipeline.save-predictions")) {
       println(s"Saving predictions as ${saveResultsAs}")
       predictions.toDF().write.parquet(saveResultsAs)
-    } else predictions.show()
+    } else predictions.show(20)
 
     if (config.getBoolean("pipeline.save-fitted")) {
       println(s"Saving fitted model as ${saveFittedAs}")
