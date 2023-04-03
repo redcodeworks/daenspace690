@@ -1,0 +1,3 @@
+# Default jvm options for sbt
+-Xms4g
+-Xmx8g
