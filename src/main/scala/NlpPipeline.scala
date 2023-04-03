@@ -21,7 +21,7 @@ abstract class NlpPipeline {
   val lang = config.getString("input-data.language")
 
   val docAssembler =
-    new DocumentAssembler() setInputCol "description" setOutputCol "document"
+    new DocumentAssembler() setInputCol "text" setOutputCol "document"
 
   val sentenceEmbeddings: Transformer
 
