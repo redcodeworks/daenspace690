@@ -33,7 +33,9 @@ object ModelFit {
     if (config.getBoolean("pipeline.save-predictions")) {
       println(s"Saving predictions as ${saveResultsAs}")
       predictions.toDF().write.parquet(saveResultsAs)
-    } else predictions.show(20)
+    } else predictions
+      .select($"procedure name", $"text", $"label", $"class.result")
+      .show()
 
     if (config.getBoolean("pipeline.save-fitted")) {
       println(s"Saving fitted model as ${saveFittedAs}")

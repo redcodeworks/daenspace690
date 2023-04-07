@@ -29,7 +29,7 @@ abstract class NlpPipeline {
     .setInputCols("sentence_embeddings")
     .setOutputCol("class")
     .setLabelColumn("label")
-    .setMaxEpochs(5)
+    .setMaxEpochs(config.getInt("classifier.epochs"))
 
   val pipeline: Pipeline
   //  TODO: Implement paramgrids for cross validators
