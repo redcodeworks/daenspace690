@@ -4,6 +4,9 @@ ThisBuild / scalaVersion := "2.12.17"
 val sparkVersion = "3.2.3"
 val hadoopVersion = "3.2.3"
 
+githubOwner := "redcodeworks"
+githubRepository := "daenspace690"
+
 lazy val root = (project in file("."))
   .settings(
     name := "daenspace690",
@@ -18,12 +21,12 @@ scalacOptions ++= Seq("-language:implicitConversions", "-deprecation")
  */
 libraryDependencies ++= Seq(
   ("com.typesafe" % "config" % "1.4.2"),
-  ("org.apache.spark" %% "spark-core" % sparkVersion % "provided"),
-  ("org.apache.spark" %% "spark-sql" % sparkVersion % "provided"),
-  ("org.apache.spark" %% "spark-mllib" % sparkVersion % "provided"),
-  ("org.apache.hadoop" % "hadoop-client" % hadoopVersion % "provided"),
-  ("org.apache.hadoop" % "hadoop-aws" % hadoopVersion % "provided"),
-  ("com.amazonaws" % "aws-java-sdk" % "1.12.415" % "provided"),
+  ("org.apache.spark" %% "spark-core" % sparkVersion),
+  ("org.apache.spark" %% "spark-sql" % sparkVersion ),
+  ("org.apache.spark" %% "spark-mllib" % sparkVersion),
+  ("org.apache.hadoop" % "hadoop-client" % hadoopVersion),
+  ("org.apache.hadoop" % "hadoop-aws" % hadoopVersion),
+  ("com.amazonaws" % "aws-java-sdk" % "1.12.415"),
   ("com.johnsnowlabs.nlp" %% "spark-nlp" % "4.3.1"),
 )
 
@@ -31,3 +34,4 @@ assemblyMergeStrategy in assembly := {
   case PathList("META-INF", _*) => MergeStrategy.discard
   case _                        => MergeStrategy.first
 }
+
