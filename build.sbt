@@ -1,9 +1,6 @@
-ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / version := "0.1.0"
 
 ThisBuild / scalaVersion := "2.12.17"
-
-githubOwner := "redcodeworks"
-githubRepository := "daenspace690"
 
 lazy val root = (project in file("."))
   .settings(
@@ -12,6 +9,21 @@ lazy val root = (project in file("."))
   )
 
 scalacOptions ++= Seq("-language:implicitConversions", "-deprecation")
+
+
+// publish to github packages settings
+val githubOwner = "redcodeworks"
+val githubRepository = "daenspace690"
+
+publishTo := Some(s"GitHub $githubOwner Apache Maven Packages" at s"https://maven.pkg.github.com/$githubOwner/$githubRepository")
+publishMavenStyle := true
+credentials += Credentials(
+  "GitHub Package Registry",
+  "maven.pkg.github.com",
+  githubOwner,
+  System.getenv("GITHUB_TOKEN")
+)
+
 
 /** The "provided" tag will prevent certain dependencies from being built into the fat jar.
     The AWS EMR runtime provides most of these already.
