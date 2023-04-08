@@ -1,8 +1,6 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "2.12.17"
-val sparkVersion = "3.2.3"
-val hadoopVersion = "3.2.3"
 
 githubOwner := "redcodeworks"
 githubRepository := "daenspace690"
@@ -19,6 +17,9 @@ scalacOptions ++= Seq("-language:implicitConversions", "-deprecation")
     The AWS EMR runtime provides most of these already.
     For local development, this "provided" may need to be temporarily removed to allow proper downloading.
  */
+val sparkVersion = "3.2.3"
+val hadoopVersion = "3.2.3"
+
 libraryDependencies ++= Seq(
   ("com.typesafe" % "config" % "1.4.2"),
   ("org.apache.spark" %% "spark-core" % sparkVersion),
@@ -30,6 +31,7 @@ libraryDependencies ++= Seq(
   ("com.johnsnowlabs.nlp" %% "spark-nlp" % "4.3.1"),
 )
 
+// needed for assembling fat jars
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", _*) => MergeStrategy.discard
   case _                        => MergeStrategy.first

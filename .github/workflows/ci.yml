@@ -1,3 +1,6 @@
+# TBH: There's nothing of substance here with regards to testing.
+# All this does is show is that sbt can build the project on various JVMs.
+
 name: CI
 on:
   pull_request:
