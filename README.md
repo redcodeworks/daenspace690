@@ -4,6 +4,8 @@
 
 This project relates to the body of work around the annotation of Standard Operating Procedures ("SOPs"). The contents of `src/` represents the Scala-based spark project, intended to be run with `spark-submit`. Meanwhile, the contents of `notebooks/` is the locally developed research and can be run with the environment specified in `pyproject.toml`.
 
+This repo also uses GitHub Packages and GitHub Actions. GitHub packages is used to host compiled artifacts and can be used in other projects using the Maven package manager. GitHub actions is used for CI/CD. There is a Continuous Integration job, which checks if the project successfully compiles, and a Continuous Deployment job, which packages the source code into a jar and pushes the resulting artifact to GitHub Packages.
+
 ### Natural Language Processing
 
 This project utilizes the Spark NLP library from John Snow Labs. Specifically, we are using transformer-based embeddings during the pipeline stages to vectorize text before feeding it into an optimized deep learning classifier.
